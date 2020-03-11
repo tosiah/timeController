@@ -233,22 +233,22 @@ h2 {
 }
 
 .income .item__date,
-.income .item__delete--btn {
+.income .item__delete--btn, .income .item__count--btn {
     color: #28B9B5;
 }
 
 .event .item__date,
 .event .item__time,
-.event .item__delete--btn {
+.event .item__delete--btn, .event .item__count--btn {
     color: #FF5049;
 }
 
 
-.item__delete {
+.item__delete, .item__count {
     float: left;
 }
 
-.item__delete--btn {
+.item__delete--btn, .item__count--btn {
     font-size: 22px;
     background: none;
     border: none;
@@ -259,10 +259,10 @@ h2 {
     display: none;
 }
 
-.item__delete--btn:focus { outline: none; }
-.item__delete--btn:active { transform: translateY(2px); }
+.item__delete--btn:focus, .item__count--btn:focus { outline: none; }
+.item__delete--btn:active, .item__count--btn:active { transform: translateY(2px); }
 
-.item:hover .item__delete--btn { display: block; }
+.item:hover .item__delete--btn, .item:hover .item__count--btn { display: block; }
 .item:hover .item__date { transform: translateX(-20px); }
 .item:hover .item__time { transform: translateX(-20px); }
 

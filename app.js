@@ -30,7 +30,7 @@ var eventController = (function () {
             // ID = last ID + 1
 
             // Create new ID
-            if (data.events > 0) {
+            if (data.events.length > 0) {
                 ID = data.events[data.events.length - 1].id + 1;
             } else {
                 ID = 0;
@@ -43,6 +43,16 @@ var eventController = (function () {
 
             // Return the new element
             return newEvent;
+        },
+
+        getDate: function(eventId){
+            var date = -1;
+            data.events.forEach(function(current){
+                if(current.id==eventId){
+                    date = current.date;
+                }
+            })
+            return date;
         },
 
 
@@ -82,7 +92,7 @@ var UIController = (function () {
         },
 
         addEvent: function (newEvent) {
-            var eventElement = '<div class="item clearfix" id="event-%Id%"><div class="item__name">%Name%</div><div class="right clearfix"><div class="item__date">%Date%</div><div class="item__time">%Time%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+            var eventElement = '<div class="item clearfix" id="event-%Id%"><div class="item__name">%Name%</div><div class="right clearfix"><div class="item__date">%Date%</div><div class="item__time">%Time%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div><div class="item__count"><button class="item__count--btn"><i class="ion-ios-close-outline"></i></button></div>';
 
             var newDiv = document.createElement('div');
 
@@ -110,6 +120,10 @@ var UIController = (function () {
             document.querySelector(DOMstrings.inputTime).value = 0
         },
 
+        displayTimeLeft: function() {
+
+        },
+
         getDOMstrings: function () {
             return DOMstrings;
         }
@@ -134,7 +148,8 @@ var controller = (function (eventCtrl, UICtrl) {
             }
         });
 
-        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteEvent);
+       // document.querySelector(DOM.container).addEventListener('click', ctrlDeleteEvent);
+        document.querySelector(DOM.container).addEventListener('click', startCounting);
     };
 
 
@@ -167,19 +182,37 @@ var controller = (function (eventCtrl, UICtrl) {
         }
     };
 
+    var startCounting = function (event) {
+        var eventID;
+
+        eventID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        eventID = eventID.substring(6);
+        console.log(eventID);
+
+        if (eventID) {
+
+            // 1. retreve event's date from the data structure
+            console.log(eventCtrl.getDate(eventID));
+
+            // 2. Display time left from the UI
+            UICtrl.displayTimeLeft(eventID);
+
+        }
+    }
+
 
     var ctrlDeleteEvent = function (event) {
-        var itemID
+        var eventID;
 
-        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        eventID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-        if (itemID) {
+        if (eventID) {
 
             // 1. delete the item from the data structure
-            eventCtrl.deleteItem(itemID);
+            eventCtrl.deleteItem(eventID);
 
             // 2. Delete the item from the UI
-            UICtrl.deleteListItem(itemID);
+            UICtrl.deleteListItem(eventID);
 
         }
     };
